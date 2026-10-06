@@ -1,19 +1,7 @@
 import pandas as pd
 from tabulate import tabulate
 
-print('''-------------------------------------------- Video Game Store Management --------------------------------------------
-Members:
-        Prajwal J Totad
-        Nevin Mathew
-        Pranit Kamate
-        Nitesh M
-        Ranjan R
-''')
-
-# -------------------
-# CSV INITIALIZATION
-# -------------------
-
+# Create each data file with its expected columns if it does not already exist.
 try:
     login_df = pd.read_csv("login.csv")
 except:
@@ -32,35 +20,36 @@ except:
     purchase_df = pd.DataFrame(columns=["bdate", "name", "icode", "qty", "amount"])
     purchase_df.to_csv("purchase.csv", index=False)
 
-# -----------------
-# Helper Functions
-# -----------------
 
+# Read the current stock records from the CSV file.
 def read_stock():
     return pd.read_csv("stock.csv")
 
+# Save stock changes so they persist between program runs.
 def write_stock(df):
     df.to_csv("stock.csv", index=False)
 
+# Read the admin credentials from the CSV file.
 def read_login():
     return pd.read_csv("login.csv")
 
+# Save updated admin credentials.
 def write_login(df):
     df.to_csv("login.csv", index=False)
 
+# Read the saved customer purchase records.
 def read_purchase():
     return pd.read_csv("purchase.csv")
 
+# Save purchase history to the CSV file.
 def write_purchase(df):
     df.to_csv("purchase.csv", index=False)
 
+# Display a DataFrame as a formatted console table.
 def show_table(df):
     print(tabulate(df, headers="keys", tablefmt="grid", showindex=False))
 
-# --------------------
-# MAIN PROGRAM
-# --------------------
-
+# Keep showing the main menu until the user chooses to exit.
 while True:
     print("\n-----------------------------------")
     print(" Welcome to Gamer's Stop ")
@@ -69,12 +58,13 @@ while True:
 
     ch = int(input("Enter your choice: "))
 
-    # ================= ADMIN =================
+    # Authenticate the admin before displaying inventory management options.
     if ch == 1:
         passwd = input("Enter the password: ")
         login_df = read_login()
 
         if passwd == login_df.loc[0, "password"]:
+            # Keep the admin menu open until the admin logs out.
             while True:
                 print("\n==== Welcome Admin ====")
                 print(
@@ -90,7 +80,8 @@ while True:
                 ch = int(input("Enter your choice: "))
                 stock_df = read_stock()
 
-                if ch == 1:  # Add Item
+                # Add a new game or gaming device to the inventory.
+                if ch == 1:
                     icode = int(input("Enter Item Code: "))
                     iname = input("Enter Item Name: ")
                     itype = input("Game or Gaming Device?: ")
@@ -101,27 +92,31 @@ while True:
                     write_stock(stock_df)
                     print("\nItem added successfully")
 
-                elif ch == 2:  # Delete Item
+                # Remove the selected item code from the inventory.
+                elif ch == 2:
                     icode = int(input("Enter Item Code to delete: "))
                     stock_df = stock_df[stock_df["icode"] != icode]
                     write_stock(stock_df)
                     print("\nItem deleted successfully")
 
-                elif ch == 3:  # Update Price
+                # Update the price for the selected item code.
+                elif ch == 3:
                     icode = int(input("Enter Item Code: "))
                     new_price = float(input("Enter New Price: "))
                     stock_df.loc[stock_df["icode"] == icode, "price"] = new_price
                     write_stock(stock_df)
                     print("\nPrice updated successfully")
 
-                elif ch == 4:  # Update Quantity
+                # Update the available quantity for the selected item code.
+                elif ch == 4:
                     icode = int(input("Enter Item Code: "))
                     new_qty = int(input("Enter New Quantity: "))
                     stock_df.loc[stock_df["icode"] == icode, "qty"] = new_qty
                     write_stock(stock_df)
                     print("\nQuantity updated successfully")
 
-                elif ch == 5:  # Display Items
+                # Show the full inventory, or a message if it is empty.
+                elif ch == 5:
                     stock_df = read_stock()
                     print("\n====== Stock Available ======\n")
                     if stock_df.empty:
@@ -129,7 +124,8 @@ while True:
                     else:
                         show_table(stock_df)
 
-                elif ch == 6:  # Change Password
+                # Verify the current password before saving a replacement.
+                elif ch == 6:
                     old_pw = input("Enter old password: ")
                     if old_pw == login_df.loc[0, "password"]:
                         new_pw = input("Enter new password: ")
@@ -139,6 +135,7 @@ while True:
                     else:
                         print("\nIncorrect password")
 
+                # Return to the main menu.
                 elif ch == 7:
                     break
                 else:
@@ -147,7 +144,7 @@ while True:
         else:
             print("\nWrong password")
 
-    # ================= CUSTOMER =================
+    # Let customers browse stock and purchase an available item.
     elif ch == 2:
         stock_df = read_stock()
 
@@ -179,10 +176,10 @@ while True:
                 print("\nInsufficient stock")
                 continue
 
+            # Calculate the purchase total and update or remove the stock row.
             amount = qty * item["price"]
             remaining_qty = item["qty"] - qty
 
-            #DROP ROW IF QUANTITY BECOMES ZERO
             if remaining_qty == 0:
                 stock_df = stock_df[stock_df["icode"] != icode]
             else:
@@ -190,6 +187,7 @@ while True:
 
             write_stock(stock_df)
 
+            # Append the completed purchase to the permanent purchase history.
             purchase_df = read_purchase()
             purchase_df.loc[len(purchase_df)] = [
                 pd.Timestamp.now().date(),
@@ -207,6 +205,7 @@ while True:
         else:
             print("\nInvalid option")
 
+    # End the application when the user selects Exit.
     elif ch == 3:
         print("\nThank you for visiting Gamer's Stop!")
         break
