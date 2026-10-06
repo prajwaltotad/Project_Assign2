@@ -1,56 +1,70 @@
-# Gamer's Stop — Video Game Store Management System
+# 🎮 Gamer's Stop
 
-A console-based application for managing a video game store's inventory and customer purchases. Built with Python and Pandas, it stores login, stock, and purchase data in CSV files.
+### Video Game Store Management System
 
-## Features
+Gamer's Stop is a Python-based, console application for managing a video game store. Admins can maintain the inventory, while customers can browse and purchase available games and gaming devices. Store data is saved locally in CSV files.
 
-### Admin Panel
-- Password-protected access
-- Add and delete games or gaming devices
-- Update item prices and quantities
-- Display all stock
-- Change the admin password
+## ✨ Features
 
-### Customer Panel
-- View available items
-- Purchase items
-- Automatically update stock after a purchase
-- Save purchase history
+### 🛠️ Admin Panel
+- 🔐 Password-protected access
+- ➕ Add games and gaming devices
+- 🗑️ Delete items
+- 💲 Update item prices
+- 📦 Update stock quantities
+- 📋 Display all inventory
+- 🔑 Change the admin password
 
-## Tech Stack
+### 🛍️ Customer Panel
+- 👀 View available items
+- 🧾 Purchase items
+- 📉 Automatically reduce stock after a purchase
+- 🗂️ Save purchase history
 
-- Python
-- Pandas
-- Tabulate
-- CSV files for persistent data storage
+## 🧰 Technology
 
-## How to Run
+| Technology | Purpose |
+|---|---|
+| Python | Application logic |
+| Pandas | Data handling |
+| Tabulate | Formatted console tables |
+| CSV | Persistent local data storage |
 
-1. Install Python.
+## 🚀 Getting Started
+
+### Requirements
+
+- Python 3
+- `pandas`
+- `tabulate`
+
+### Installation and Run
+
+1. Clone the repository and open its directory.
 2. Install the required packages:
 
    ```bash
    pip install pandas tabulate
    ```
 
-3. From the project directory, run the updated application:
+3. Start the application:
 
    ```bash
    python Project_Updated
    ```
 
-   Alternatively, open `Project.ipynb` in Jupyter Notebook and run its cells.
+   You can also open `Project.ipynb` in Jupyter Notebook and run the notebook cells.
 
-The initial admin credentials in `login.csv` are `Admin` / `Pass`. Change the password from the Admin Panel after logging in.
+The initial admin login is `Admin` / `Pass`. For security, change the password in the Admin Panel after your first login.
 
-## File Structure
+## 🗃️ Project Files
 
 ```text
 .
-├── Project_Updated   # Updated console application
+├── Project_Updated   # Console application
 ├── Project.ipynb     # Jupyter Notebook version
 ├── login.csv         # Admin login credentials
-├── stock.csv         # Inventory records
+├── stock.csv         # Inventory data
 ├── purchase.csv      # Purchase history
-└── README.md
+└── README.md         # Project documentation
 ```
